@@ -1,0 +1,889 @@
+﻿<p> IT Project Apache 2.4 – Webserver</p>
+<p>Prof. Dr. rer. nat. Erwin Hoffmann</p>
+<p>Sommer Semester 2023</p>
+<p>Muhammad Obaid Ullah, 1230264</p>
+<p>Rao Shahan Naveed, 1275261</p>
+<p>Syed Adil Ehsan, 1275245</p>
+<p>Mohammad Ayman, 1181711</p>
+<p>Mubashir Ahmed, 1295872</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<p><a href="#_toc141721750">1. Introduction</a></p>
+<p><a href="#_toc141721751">2. Objective</a></p>
+<p><a href="#_toc141721752">3. Pre-requisites</a></p>
+<p><a href="#_toc141721753">3.1. Internet Access</a></p>
+<p><a href="#_toc141721754">3.2. VirtualBox</a></p>
+<p><a href="#_toc141721755">3.3. Operating System</a></p>
+<p><a href="#_toc141721756">3.4. Root Access in FreeBSD</a></p>
+<p><a href="#_toc141721757">3.5. Testing Environment</a></p>
+<p><a href="#_toc141721758">4. Introduction to FreeBSD</a></p>
+<p><a href="#_toc141721759">5. Features of FreeBSD</a></p>
+<p><a href="#_toc141721760">5.1. Kernels</a></p>
+<p><a href="#_toc141721761">5.2. Boot Process of FreeBSD</a></p>
+<p><a href="#_toc141721762">6. Virtual Consoles</a></p>
+<p><a href="#_toc141721763">7. Accounts</a></p>
+<p><a href="#_toc141721764">8. Accounts Management</a></p>
+<p><a href="#_toc141721765">9. Group Management</a></p>
+<p><a href="#_toc141721766">10. Permissions</a></p>
+<p><a href="#_toc141721767">10.1. Directory Structure of FreeBSD</a></p>
+<p><a href="#_toc141721768">11. Useful Tools to Install for the Project in FreeBSD</a></p>
+<p><a href="#_toc141721769">11.1. pkg Upgrade</a></p>
+<p><a href="#_toc141721770">11.2. Vim Installation</a></p>
+<p><a href="#_toc141721771">11.3. Process Management</a></p>
+<p><a href="#_toc141721772">11.4. Process Viewers</a></p>
+<p><a href="#_toc141721773">11.5. Web Browser</a></p>
+<p><a href="#_toc141721774">12. Apache2.4 Installation</a></p>
+<p><a href="#_toc141721775">13. Runit</a></p>
+<p><a href="#_toc141721776">13.1. Service Directory</a></p>
+<p><a href="#_toc141721777">13.2. Scripts</a></p>
+<p><a href="#_toc141721778">13.3. State of each Service</a></p>
+<p><a href="#_toc141721779">13.4. Supervision</a></p>
+<p><a href="#_toc141721780">14. Utilities in Runit Tool</a></p>
+<p><a href="#_toc141721781">14.1. runsv</a></p>
+<p><a href="#_toc141721782">14.2. runsvdir</a></p>
+<p><a href="#_toc141721783">14.3. chpst</a></p>
+<p><a href="#_toc141721784">14.4. sv</a></p>
+<p><a href="#_toc141721785">15. Installation of Runit in FreeBSD</a></p>
+<p><a href="#_toc141721786">16. rc.local and run Script</a></p>
+<p><a href="#_toc141721787">16.1. Run Script</a></p>
+<p><a href="#_toc141721788">16.2. rc.local File</a></p>
+<p><a href="#_toc141721789">16.3. Pstree after Reboot</a></p>
+<p><a href="#_toc141721790">17. httpd.conf</a></p>
+<p><a href="#_toc141721791">17.1. ServerRoot and ServerName</a></p>
+<p><a href="#_toc141721792">17.2. Modules</a></p>
+<p><a href="#_toc141721793">17.2.1. mpm_event_module</a></p>
+<p><a href="#_toc141721794">17.2.2. log_config_module</a></p>
+<p><a href="#_toc141721795">17.2.3. mime_module</a></p>
+<p><a href="#_toc141721796">17.2.4. authz_core_module</a></p>
+<p><a href="#_toc141721797">17.2.5. dir_module</a></p>
+<p><a href="#_toc141721798">17.2.6. unixd_module</a></p>
+<p><a href="#_toc141721799">17.2.7. ssl_module</a></p>
+<p><a href="#_toc141721800">17.3. TypesConfig</a></p>
+<p><a href="#_toc141721801">17.4. PID File</a></p>
+<p><a href="#_toc141721802">17.5. User and Group</a></p>
+<p><a href="#_toc141721803">17.6. Ports</a></p>
+<p><a href="#_toc141721804">17.7. DocumentRoot</a></p>
+<p><a href="#_toc141721805">17.8. VirtualHost</a></p>
+<p><a href="#_toc141721806">17.9. httpd.conf File Content</a></p>
+<p><a href="#_toc141721807">18. SSL Certificates</a></p>
+<p><a href="#_toc141721808">18.1. X509 Certificates in Https</a></p>
+<p><a href="#_toc141721809">18.2. Working of a Self-Signed SSL Certificate and Private/Public Key Generation</a></p>
+<p><a href="#_toc141721810">18.3. Generating a Self-Signed Certificate in Project</a></p>
+<p><a href="#_toc141721811">18.4. Server.cfg Configuration File</a></p>
+<p><a href="#_toc141721812">18.5. make_server.sh Script</a></p>
+<p><a href="#_toc141721813">18.6. View Certificate</a></p>
+<p><a href="#_toc141721814">18.7. Trust Chain</a></p>
+<p><a href="#_toc141721815">19. Logging</a></p>
+<p><a href="#_toc141721816">19.1. Access Log</a></p>
+<p><a href="#_toc141721817">19.2. Common Log Format</a></p>
+<p><a href="#_toc141721818">19.3. Combined Log Format</a></p>
+<p><a href="#_toc141721819">19.4. Error Log</a></p>
+<p><a href="#_toc141721820">20. Log Rotation</a></p>
+<p><a href="#_toc141721821">20.1. Newsyslog</a></p>
+<p><a href="#_toc141721822">21. References</a></p>
+<ol>
+<li><h2 id="-introduction-"><em>Introduction</em></h2>
+</li>
+</ol>
+<p>A web server is used to serve websites on the internet. A webserver finds the content from the server and delivers it to the web. The challenging job of a web server is to deliver the requested content to many different web users at the same time. A web server processes files in different languages such as Java, PHP, Python etc.</p>
+<ol>
+<li><h2 id="-objective-"><em>Objective</em></h2>
+</li>
+</ol>
+<p>The primary objective of this project is to design, deploy and configure a productive internet service using the Apache 2.4 web server on the FreeBSD operating system. The project aims to provide a comprehensive understanding of the Apache 2.4 web server, encompassing its functionalities, features, and capabilities. Step by step process of setting up a webserver will be followed to achieve the desired results. The web server must offer a service accessible via an IP address on a specific port number. Apache 2.4 web server will be monitored using Runit supervising tool. Runit is a simple but efficient init system which ensures high availability and reliability of services. Apache server will be configured and customized according to the requirements. The critical aspect of the project is the secure integration of X.509 certificates to enable encrypted communication through SSL/TLS. Another aspect of this project is log monitoring. Access and error logs will be monitored and rotated according to the requirements.</p>
+<ol>
+<li><h2 id="-pre-requisites-"><em>Pre-requisites</em></h2>
+</li>
+</ol>
+<p>Following are the tools and requirements that are essential to initiate the project:</p>
+<p>3.1.  <strong>Internet Access</strong>
+   Internet access is necessary during this project in order to download the required tools/packages for the webserver to function. A webserver must also be able to provide services using an internet connection.</p>
+<p>3.2. <strong>VirtualBox</strong>
+   Oracle VirtualBox 7.0 (Version 7.0.8 r156879 (Qt5.15.2)) has been installed on Windows 10.</p>
+<p>   This version has been downloaded from the website of Oracle <a href="https://www.virtualbox.org/">https://www.virtualbox.org/</a> and is the latest available version.</p>
+<p>3.3. <strong>Operating System</strong>
+   FreeBSD Operating System is used as the hosting platform for the Apache web server. FreeBSD is downloaded from the website <a href="https://www.freebsd.org/">https://www.freebsd.org/</a> as an .iso file and has been installed in Virtual Box with minimum base memory and processor hardware requirements.</p>
+<p>   FreeBSD Installation Guide: <a href="https://www.freebsd.org/doc/handbook/install.html">https://www.freebsd.org/doc/handbook/install.html</a></p>
+<p>3.4. <strong>Root Access in FreeBSD</strong>
+   To install and configure the necessary software packages and to make changes in the system, administrative access (root privileges) is required.</p>
+<p>3.5.<strong>Testing Environment</strong>
+   A testing environment will be ideal for the project tasks to be carried out before implementing the results on the server.</p>
+<ol>
+<li><h2 id="-introduction-to-freebsd-"><em>Introduction to FreeBSD</em></h2>
+</li>
+</ol>
+<p>FreeBSD is an open-source Unix-like OS that finds its origin in Berkeley Software Distribution (BSD) Unix. It was developed at the University of California, Berkeley and shares its roots with some other famous BSD-based operating systems. It is famous for its stability, security and high performance which makes it ideal for web servers. FreeBSD is ideal for internet or Intranet services as it provides robust network services under the heaviest loads and uses memory in an efficient manner while maintaining much better response times for thousands of simultaneous user processes. It is free of charge and comes with the source code. FreeBSD focuses on performance, networking, and storage with ease of administration and comprehensive documentation to fully utilize the potential of a computer.</p>
+<ol>
+<li><h2 id="-features-of-freebsd-"><em>Features of FreeBSD</em></h2>
+</li>
+</ol>
+<p>FreeBSD offers a lot of useful features to provide high performance, networking, and storage. It also offers dynamic functionality for system administration and documentation. We will discuss some features here to understand the FreeBSD Operating System better:</p>
+<p>5.1. <strong>Kernels</strong>
+   The kernel is the core of the FreeBSD operating system. It is responsible for managing memory, enforcing controls, disk access, networking and much more. A kernel is the lowest layer above the CPU. FreeBSD has a monolithic kernel design, which means that most of the operating system’s functionalities are contained within a single, large kernel image. FreeBSD kernel provides a set of system call interfaces that allow user-level applications to interact with kernel-level services. To communicate with hardware devices, device drivers are also included in FreeBSD kernel.</p>
+<p>5.2. <strong>Boot Process of FreeBSD</strong>
+   The Boot Process of FreeBSD consists of series of steps, that start with the starting of a computer. We will discuss these steps briefly:</p>
+<ul>
+<li><p><em>BIOS:</em> When a computer is started, its firmware (BIOS) initializes the hardware components.</p>
+</li>
+<li><p><em>Boot Loader:</em> Boot Loader of FreeBSD which is called <em>Loader</em> or <em>FreeBSD Boot Loader</em> by default, will be selected from the device.</p>
+</li>
+<li><p><em>Kernel:</em> The boot loader will load the kernel (kernel or kernel.gz) from the selected device into the memory. Kernel is located in root directory of FreeBSD (/boot/kernel/kernel). After the kernel is loaded, it begins the initialization process. Its code will be executed from the memory.</p>
+</li>
+<li><p><em>File System:</em> Kernel will mount the root file system which is located on a storage device.</p>
+</li>
+<li><p><em>Init:</em> After the files system, kernel will execute the system’s initial user-space process <em>init</em> which is located at <em>/sbin/init</em>.</p>
+</li>
+<li><p><em>System Services:</em> <em>init</em> process then reads the <em>/etc/rc.conf</em> to start the necessary system services. Other <em>rc</em> scripts in <em>/etc/rc.d</em> will also be executed if specified. Additionally, FreeBSD allows its users to customize the boot process by placing commands in <em>/etc/rc.local</em> file. Commands placed in this file will be executed during the boot process after all other system services are started.</p>
+</li>
+</ul>
+<p>5.3. <strong>User Interaction</strong></p>
+<p>Once the boot process is complete, the user will be able to interact with the system through the terminal.</p>
+<ol>
+<li><h2 id="-virtual-consoles-"><strong>Virtual Consoles</strong></h2>
+In standard FreeBSD, the system will boot into a command line login prompt. The first console that pops up is <strong>ttyv0</strong>, which indicates the <strong>system console</strong>. FreeBSD is a multiuser system, which is why every user account has a unique <strong>username</strong> and a separate <strong>password</strong> for each account. To switch between different consoles key combinations <strong>Alt+F1</strong> to <strong>Alt+F8</strong> have been reserved. For example, to switch to system console <strong>ttyv0</strong>, you have to use the combination <strong>Alt + F1</strong>. Similarly, to switch to the first virtual console <strong>ttyv1</strong> key combination <strong>Alt +F2</strong> needs to be used.</li>
+<li><h2 id="-accounts-"><strong>Accounts</strong></h2>
+Although FreeBSD allows multiple users to use the computer at the same time, only one user can use the computer while sitting in front of it. Whereas any number of users can log in to the system through the network. Each user needs an account to use the system. There are different types of accounts that perform different tasks. For example, system accounts, user accounts and the super user account. </li>
+</ol>
+<p><strong>System user accounts</strong> are used to run services such as DNS, mail, and web servers. Examples of such accounts are <strong>daemon</strong>, <strong>www</strong> etc. <strong>User accounts</strong> are assigned to real people. This type of account has certain information associated with it which is as follows:</p>
+<ul>
+<li><strong>Username:</strong> It is unique for each user and is typed at the time of login.</li>
+<li><strong>Password:</strong> Each account has its own password to login.</li>
+<li><strong>User ID</strong> <strong>(UID):</strong> It is a number that uniquely identifies the user of FreeBSD system.</li>
+<li><strong>Group ID</strong> <strong>(GID):</strong> It is also a number that uniquely identifies the primary group. </li>
+<li><strong>Password Change Time:</strong> This option can be used to set the time of password expiry.</li>
+<li><strong>Account Expiration Time:</strong> Time of expiry of an account can be set here.</li>
+<li><strong>User’s Full Name:</strong> Full name of the user who is using this account.</li>
+<li><strong>Home Directory:</strong> This is the user’s starting directory when the user logs in. Normally it is <strong>/home/username</strong> or <strong>/usr/home/username</strong>.</li>
+<li><strong>User Shell:</strong> Shell provides the user’s default environment for interacting with the system.</li>
+</ul>
+<p><strong>Superuser accounts,</strong> which is the root account has the privilege to manage the system with no limitations. It must be used with much care as one slight change in the command or in any file can alter the system.</p>
+<ol>
+<li><h2 id="-accounts-management-"><strong>Accounts Management</strong></h2>
+In FreeBSD different commands are used to manage the accounts. Here are some useful commands in user account management:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><strong>Commands</strong></th>
+<th style="text-align:center"><strong>Summary</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">adduser</td>
+<td style="text-align:center"><code> </code>The recommended command-line application for adding new users.</td>
+</tr>
+<tr>
+<td style="text-align:center">rmuser</td>
+<td style="text-align:center">The recommended command-line application for removing users.</td>
+</tr>
+<tr>
+<td style="text-align:center">chpass</td>
+<td style="text-align:center"><code> </code>A flexible tool for changing user database information.</td>
+</tr>
+<tr>
+<td style="text-align:center">passwd</td>
+<td style="text-align:center">The command-line tool to change user passwords.</td>
+</tr>
+<tr>
+<td style="text-align:center">pw</td>
+<td style="text-align:center"><code> </code>A powerful and flexible tool for modifying all aspects of user accounts.</td>
+</tr>
+<tr>
+<td style="text-align:center">bsdconfig</td>
+<td style="text-align:center">A system configuration utility with account management support.</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><h2 id="-group-management-"><strong>Group Management</strong></h2>
+<p>A <strong>Group</strong> is a collection of user accounts. It can be identified using a group name and <strong>Group id (GID)</strong>. The group name to group ID mapping is listed in <strong>/etc/group</strong>. This can be modified only by the super user account. <strong>Group</strong> allows multiple users to share common permissions for certain files and directories. If rights of a file or a directory have been assigned to a specific group, it means that all users of that particular group will have the same access rights to that file or directory.</p>
+</li>
+<li><h2 id="-permissions-"><strong>Permissions</strong></h2>
+</li>
+</ol>
+<p>In FreeBSD, every file and directory have certain permissions that are associated to it. Those could be read (r), write (w) and execute (x) permissions. It is important to understand the permissions in FreeBSD in order to understand the file system of FreeBSD.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><strong>Value</strong></th>
+<th style="text-align:center"><strong>Permission</strong></th>
+<th style="text-align:center"><strong>Directory Listing</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">No read, no write, no execute</td>
+<td style="text-align:center">---</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">No read, no write, execute</td>
+<td style="text-align:center">--x</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">No read, write, no execute</td>
+<td style="text-align:center">-w-</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">No read, write, execute</td>
+<td style="text-align:center">-wx</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">Read, no write, no execute</td>
+<td style="text-align:center">r--</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">Read, no write, execute</td>
+<td style="text-align:center">r-x</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">Read, write, no execute</td>
+<td style="text-align:center">rw-</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">Read, write, execute</td>
+<td style="text-align:center">rwx</td>
+</tr>
+</tbody>
+</table>
+<p>To view the permission on the files or directories, command <strong>ls -l</strong> can be used. To Modify file permissions, we can use <strong>chmod</strong> command. <strong>chmod</strong> means change file modes. The syntax of the <strong>chmod</strong> command is as follows:</p>
+<p><strong>chmod [who][action][permission] filename</strong></p>
+<p><strong>[who]</strong> represents the users, and could be u(User/Owner), g(Group), o(Others) or a(all),</p>
+<p><strong>[action]</strong> represents action to be taken. <strong>+</strong> is to add, <strong>-</strong> is to remove and <strong>=</strong> is to set.</p>
+<p><strong>[permission]</strong> represents the desired permission that is to be set. <strong>r, w and x</strong> will be used for this purpose.</p>
+<p><strong>Examples:</strong></p>
+<p>Grants execute permissions: <strong>chmod +x filename</strong></p>
+<p>Remove execute permission from all users: <strong>chmod a-x filename</strong></p>
+<p>10.1. <strong>Directory Structure of FreeBSD</strong>
+Here is a brief look at the File System of FreeBSD.</p>
+<table>
+<thead>
+<tr>
+<th>Directory</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/</td>
+<td>Root directory of the file system.</td>
+</tr>
+<tr>
+<td>/bin/</td>
+<td>User utilities fundamental to both single-user and multi-user environments.</td>
+</tr>
+<tr>
+<td>/boot/</td>
+<td>Programs and configuration files used during operating system bootstrap.</td>
+</tr>
+<tr>
+<td>/boot/defaults/</td>
+<td>Default boot configuration files.</td>
+</tr>
+<tr>
+<td>/dev/</td>
+<td>Device special files managed by devfs.</td>
+</tr>
+<tr>
+<td>/etc/</td>
+<td>System configuration files and script.</td>
+</tr>
+<tr>
+<td>/etc/defaults/</td>
+<td>Default system configuration files.</td>
+</tr>
+<tr>
+<td>/etc/periodic/</td>
+<td>Scripts that run daily, weekly, and monthly, via cron(8).</td>
+</tr>
+<tr>
+<td>/lib/</td>
+<td>Critical system libraries needed for binaries in /bin and /sbin.</td>
+</tr>
+<tr>
+<td>/libexec/</td>
+<td>Critical system files.</td>
+</tr>
+<tr>
+<td>/media/</td>
+<td>Contains subdirectories to be used as mount points for removable media such as CDs, USB drives, and floppy disks.</td>
+</tr>
+<tr>
+<td>/mnt/</td>
+<td>Empty directory commonly used by system administrators as a temporary mount point.</td>
+</tr>
+<tr>
+<td>/net/</td>
+<td>Automounted NFS shares.</td>
+</tr>
+<tr>
+<td>/proc/</td>
+<td>Process file system.</td>
+</tr>
+<tr>
+<td>/root/</td>
+<td>Home directory for the root account.</td>
+</tr>
+<tr>
+<td>/sbin/</td>
+<td>System programs and administration utilities fundamental to both single user and multi-user environments.</td>
+</tr>
+<tr>
+<td>/tmp/</td>
+<td>Temporary files which are usually not preserved across a system reboot. A memory-based file system is often mounted at /tmp.</td>
+</tr>
+<tr>
+<td>/usr/</td>
+<td>The majority of user utilities and applications.</td>
+</tr>
+<tr>
+<td>/usr/bin/</td>
+<td>Common utilities, programming tools, and applications.</td>
+</tr>
+<tr>
+<td>/usr/include/</td>
+<td>Standard C include files.</td>
+</tr>
+<tr>
+<td>/usr/lib/</td>
+<td>Archive libraries.</td>
+</tr>
+<tr>
+<td>/usr/libdata/</td>
+<td>Miscellaneous utility data files.</td>
+</tr>
+<tr>
+<td>/usr/libexec/</td>
+<td>System daemons and system utilities executed by other programs.</td>
+</tr>
+<tr>
+<td>/usr/local/</td>
+<td>Local executables and libraries. Also used as the default destination for the FreeBSD ports framework. Within /usr/local, the general layout sketched out by hier(7) for /usr should be used. Exceptions are the man directory, which is directly under /usr/local rather than under /usr/local/share, and the ports documentation is in share/doc/port.</td>
+</tr>
+<tr>
+<td>/usr/ports/</td>
+<td>The FreeBSD Ports Collection (optional).</td>
+</tr>
+<tr>
+<td>/usr/sbin/</td>
+<td>System daemons and system utilities executed by users.</td>
+</tr>
+<tr>
+<td>/usr/share/</td>
+<td>Architecture-independent files.</td>
+</tr>
+<tr>
+<td>/usr/src/</td>
+<td>BSD and/or local source files.</td>
+</tr>
+<tr>
+<td>/var/</td>
+<td>Multi-purpose log, temporary, transient, and spool files.</td>
+</tr>
+<tr>
+<td>/var/log/</td>
+<td>Miscellaneous system log files.</td>
+</tr>
+<tr>
+<td>/var/tmp/</td>
+<td>Temporary files which are usually preserved across a system reboot.       </td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><h2 id="-useful-tools-to-install-for-the-project-in-freebsd-"><strong>Useful Tools to Install for the Project in FreeBSD</strong></h2>
+11.1. <strong>pkg Upgrade</strong>
+After the installation of FreeBSD and getting familiar with its directory structure the next step is to upgrade the packages. For this purpose, we will first update the package repository to make sure it is up to date. To update the package repository following command will be executed:</li>
+</ol>
+<p>`                                                    <strong>pkg update</strong> </p>
+<p>When this command is executed, FreeBSD’s package management system (pkg) contacts the package repositories specified in the configuration (usually under <strong>/etc/pkg/FreeBSD.conf</strong>). It fetches the latest information about the packages. After fetching, it updates the local package database. Now to upgrade to the latest version we will execute the following command:</p>
+<p>`                                                    <strong>pkg upgrade</strong> </p>
+<p>This command then upgrades the installed packages to their latest versions available in the repositories.
+11.2. <strong>Vim Installation</strong>
+For the project, we need to edit and configure different files. For this purpose, there are different tools available. <strong>Vi/Vim</strong>, <strong>Emacs</strong>, <strong>Nano</strong> and <strong>Ed</strong> are some of the useful editors. We are mostly using Vi/Vim text editor in this project. Vim is a powerful text-editor tool which can be installed on FreeBSD using following command:</p>
+<p><code> </code><strong>pkg install vim</strong></p>
+<p>Vim is a highly configurable and efficient tool for text editing in FreeBSD. It is an enhanced version of the traditional <strong>vi</strong> editor.
+11.3. <strong>Process Management</strong>
+FreeBSD can run different tasks at the same time. Each running program or task at any one time is called a process. Below are some useful commands for the interaction with processes.</p>
+<p><strong>ps</strong>: To view the information about the processes that are running.</p>
+<p><strong>kill</strong>: It is used to terminate a process using PID.</p>
+<p><strong>killall</strong>: It is used to kill the processes using there names. </p>
+<p><strong>pgrep</strong>: It searches for the processes based on their names and returns their PIDs. </p>
+<p>11.4. <strong>Process Viewers</strong>
+Process viewers are useful tools to monitor and manage the processes in FreeBSD. Some commonly used process viewers are <strong>top</strong>, <strong>htop</strong>, <strong>ps</strong>, <strong>gtop</strong> and <strong>htop</strong>. We are using <strong>htop</strong> and <strong>pstree</strong> in this project for this purpose.</p>
+<p><strong>htop</strong> is an interactive process viewer. It is user friendly, and the user can view the processes in real-time. It continuously keeps updating the process and system information. It retrieves the information by reading data from <strong>kern.proc</strong> in FreeBSD. It shows the important information such as Process ID (PID), User, Priority of the process (PRI), State of the process (S), TIME (TIME+) measured in clock ticks that the process has spent in user and system time, full command line of the process (Command) etc. To install <strong>htop</strong> following command needs to be executed:</p>
+<p><code> </code><strong>pkg install htop</strong></p>
+<p><strong>pstree</strong> is a command line tool that shows the process hierarchy in a tree-like structure. <strong>pstree</strong> makes it easy to understand the relationships between parent and child processes. To install <strong>psrtree</strong> we need to execute the following command:</p>
+<p><code> </code><strong>pkg install pstree</strong></p>
+<p>11.5. <strong>Web Browser</strong>
+As in this project we are working on the console FreeBSD, we need console-based web browsers in order to open the webpages when needed. There are different terminal web browsers available such as <strong>lynx</strong>, <strong>links</strong>, <strong>w3m</strong> and <strong>Netsruf</strong> etc. We will use <strong>lynx</strong> browser in this project. <strong>Lynx</strong> is simple, fast and supports basic html. It is one of the user-friendly browsers available in its category. To install <strong>lynx</strong>, we can execute the following command:</p>
+<p><code> </code><strong>pkg install lynx</strong></p>
+<p>To open websites using lynx, the following command can be used as an example,</p>
+<p><code> </code><strong>lynx google.com</strong> or <strong>lynx 127.0.0.1</strong>         </p>
+<ol>
+<li><h2 id="-apache2-4-installation-"><strong>Apache2.4 Installation</strong></h2>
+After updating the installed packages, we can proceed to install Apache 2.4. To do this the following command needs to be executed in the terminal:</li>
+</ol>
+<p><code> </code><strong>pkg install apache24</strong></p>
+<p>Once the installation is complete the following command can be executed to run Apache 2.4. Apache runs as the <strong>www</strong> user and group on FreeBSD.</p>
+<p><code> </code><strong>service apache24 start</strong></p>
+<p>To add Apache 2.4 to the startup, <strong>rc.conf</strong> file needs to be edited. Following are the steps that need to be performed:</p>
+<p><strong>Step 1:</strong>  Open <strong>/etc/rc.conf</strong> file using <strong>vim/vi</strong> editor.</p>
+<p><strong>Step 2:</strong>  Add <strong>apache24_enable=”YES”</strong>  in <strong>rc.conf</strong> file.    </p>
+<p>Some of the import directories related to Apache 2.4 in FreeBSD are as follows:</p>
+<ul>
+<li><p><strong>Main Configuration: /usr/local/etc/apache24</strong> contains the main configuration files for Apache.</p>
+</li>
+<li><p><strong>httpd.conf: /usr/local/etc/apache24/httpd.conf</strong> contains the primary configuration file for Apache. This file sets most of the much-needed configurations. We will configure <strong>httpd.conf</strong> completely in this project according to our needs. This will be discussed later in the documentation.</p>
+</li>
+<li><p><strong>Modules: /usr/local/libexec/apache24</strong> contains the Apache modules that will be used in the <strong>httpd.conf</strong> for the configuration.</p>
+</li>
+<li><p><strong>Web Root Directory:</strong> <strong>/usr/local/www/apache24/data/</strong> is the default web root directory for Apache. Here we can place our website files.</p>
+</li>
+<li><p><strong>Log files:</strong> Apache log files are stored by default in <strong>/var/log/httpd/</strong>. Similarly, Runtime files and PID files are stored in <strong>/var/run/httpd/</strong>.</p>
+</li>
+<li><p><strong>Executable Files:</strong> Executable and binary files are found in <strong>/usr/local/sbin/httpd</strong>.</p>
+</li>
+<li><h2 id="-runit-"><strong>Runit</strong></h2>
+<p>Runit is a cross-platform Unix init scheme with service supervision. It is used to manage and monitor services in a system. It is efficient and straightforward, which makes it a good choice to manage services in Operating Systems such as FreeBSD. Some key features of Runit are as follows:</p>
+</li>
+</ul>
+<p>13.1. <strong>Service Directory</strong>
+In Runit, we specify services with a separate directory for each service. We have located service directories under <strong>/var/service</strong>.</p>
+<p>13.2. <strong>Scripts</strong>
+We will create the subdirectories in the <strong>/var/service</strong> directory<strong> which will contain </strong>run script.<strong> These subdirectories will be supervised by the Runit tool.
+13.3. </strong>State of each Service<strong>
+Runit continuously maintains the state of each service using a </strong>supervise<strong> subdirectory, which contains the status of the service and the </strong>process id (pid)<strong>. 
+13.4. </strong>Supervision**
+Runit monitors the running services continuously and makes sure that they keep running. If a service stops, Runit automatically restarts it, which makes it crash resilient.</p>
+<ol>
+<li><h2 id="-utilities-in-runit-tool-"><strong>Utilities in Runit Tool</strong></h2>
+14.1. <strong>runsv</strong>
+runsv starts and monitors a service (must be a directory). runsv switches to the directory and starts the run script. It maintains status information in a binary format in <strong>/service/supervise/status</strong> and in human readable format in <strong>/service/supervise/stat</strong>.</li>
+</ol>
+<p>14.2. <strong>runsvdir</strong> 
+runsvdir is used to start and monitor a collection of <strong>runsv</strong> processes. Its synopsis looks like this:</p>
+<p><strong>runsvdir [-P] dir</strong> </p>
+<p>Here <strong>dir</strong> indicates a directory. It will start a <strong>runsv</strong> process for each of the subdirectories. </p>
+<p><strong>-P</strong> uses setsid to run each <strong>runsv</strong> process in a new session and separate process group.</p>
+<p>14.3. <strong>chpst</strong>
+It is used to run a program with changed process state. It will be used in the run script to execute the service’s main process with custom configurations.</p>
+<p>14.4. <strong>sv</strong>
+It is a command-line tool that is used to control and manage services monitored by <strong>runsv</strong>.</p>
+<p>The <strong>sv</strong> program can report the current status and controls the state of services monitored by runsv supervisor. The command looks like as follows:</p>
+<p><strong>sv command service</strong></p>
+<p>For example: To get the status of the service Apache 2.4 we use,</p>
+<p><strong>sv status /var/service/apache24</strong> </p>
+<p>To start the service apache24 we use,</p>
+<p><strong>sv start /var/service/apache24</strong> </p>
+<p>To restart the service apache24 we use,</p>
+<p><strong>sv restart /var/service/apache24</strong> </p>
+<p>To stop the service apache24 we use,</p>
+<p><strong>sv stop /var/service/apache24</strong> </p>
+<ol>
+<li><h2 id="-installation-of-runit-in-freebsd-"><strong>Installation of Runit in FreeBSD</strong></h2>
+Create a directory /package and execute the following commands,</li>
+</ol>
+<p><strong>mkdir -p /package</strong> (Only if /package doesn’t exist before)</p>
+<p><strong>chmod 1755 /package</strong></p>
+<p>Go to the website <strong>smarden.org/runit/install.html</strong>. Download <strong>runit-2.1.2.tar.giz</strong> into the directory <strong>/package</strong>, and then execute the following commands:</p>
+<p><strong>cd /package</strong> </p>
+<p><strong>gunzip runit-2.1.2.tar</strong> (Decompresses the <strong>runit-2.1.2.tar.gz</strong> file, creating <strong>runit-2.1.2.tar</strong>)</p>
+<p><strong>tar -xpf runit-2.1.2.tar</strong> (Extracts the contents of the <strong>runit-2.1.2.tar</strong> archive)</p>
+<p><strong>rm runit-2.1.2.tar</strong> (Removes the compressed <strong>runit-2.1.2.tar</strong> file)</p>
+<p><strong>cd admin/runit-2.1.2</strong> (Changes the current directory to <strong>admin/runit-2.1.2</strong>)</p>
+<p>Once the above steps performed, navigate to <strong>/package/admin/runit-2.1.2/src</strong> and<strong> using </strong>lynx** browser install the patch files from <a href="https://www.fehcom.net/patch-utmpx.diff">https://www.fehcom.net/patch-utmpx.diff</a></p>
+<p>Since we do not have <strong>gcc</strong> compiler installed in our FreeBSD environment, we will make the following changes in the <strong>/package/admin/runit-2.1.2/src</strong> folder. We will open <strong>conf-cc</strong> and <strong>conf-ld</strong> and replace <strong>gcc</strong> with <strong>cc</strong> using vim editor.</p>
+<p>Now we will install the patches by using the following command on console:</p>
+<p><strong>Patch &lt; patch-utmpx.diff</strong></p>
+<p>Now to install Runit we will move to the <strong>/package/admin/runit-2.1.2</strong> directory and install by using following commands on console:</p>
+<p><strong>cd /package/admin/runit-2.1.2</strong></p>
+<p><strong>package/install</strong></p>
+<ol>
+<li><h2 id="-rc-local-and-run-script-"><strong>rc.local and run Script</strong></h2>
+To monitor <strong>Runit</strong> and supervise the Apache server at the startup, <strong>rc.local</strong> file needs to be modified. In this file we will specify the service directory that needs to be monitored. In the subdirectory of this service named <strong>apache24</strong>, we will create a run script that will be executed to start the Apache server at the startup under the supervision of Runit.    </li>
+</ol>
+<p>16.1. <strong>Run Script</strong>
+A <strong>run</strong> script<strong> will be used to start the Apache Server with the specific configuration file in the foreground while redirecting standard error to standard output. For the system management purpose, </strong>chpst** will be used to run the server in a new process group. To create this script the following steps are required:</p>
+<p>Navigate to <strong>/var/service</strong> and create directory <strong>apache24</strong>. In the directory <strong>apache24</strong>, <strong>run</strong> script needs to be created using <strong>vim</strong> editor.</p>
+<p><strong>cd /var/service</strong></p>
+<p><strong>mkdir apache24</strong></p>
+<p><strong>vim run</strong></p>
+<p>Now the following script needs to be written in the run file:</p>
+<p><strong>#!/bin/sh</strong></p>
+<p><strong>exec 2&gt;&amp;1</strong></p>
+<p><strong>exec env -i /command/chpst -P \</strong></p>
+<p><strong>/usr/local/sbin/httpd -f /usr/local/etc/apache24/httpd.conf -DFOREGROUND 2&gt;&amp;1</strong></p>
+<p><strong>/bin/sh</strong> is the path to the default Bourne shell in FreeBSD. The <strong>exec</strong> command is used to replace the current shell process with a specific command. The <strong>env -i</strong> clears the environment to ensure a clean environment before running the command. The <strong>/command/chpst</strong> allows running a program with specific resource limits and in a process group. Next <strong>-P</strong> will make sure that the process is placed in its own process group. The <strong>/usr/local/sbin/httpd</strong> is an executable binary file. It contains machine code that FreeBSD can directly execute. It is the core of Apache Server. The <strong>-f</strong> specifies the path to the <strong>httpd.conf</strong> which is provided in the command as <strong>/usr/local/etc/apache24/httpd.conf.</strong> httpd.conf file contains the configurations that Apache server will use. The <strong>-DEFOREGROUND</strong> tells the Apache to run in the foreground. At the end <strong>2&gt;&amp;1</strong> redirects standard error to standard output. It basically ensures that standard error and standard output are combined and sent to the same output stream.</p>
+<p>To make this <strong>run</strong> script executable, the following command needs to be executed: </p>
+<p><strong>#chmod +x run (</strong>Changes the file permission of run to be executable)</p>
+<p>Now the run script is ready to be executed.
+16.2. <strong>rc.local File</strong>
+This file is not part of the standard FreeBSD but can be created in <strong>/etc</strong> directory and is used to execute certain commands or scripts during the system boot process. Commands written in this file are executed towards the end of the system’s boot process, where most of the system services and configurations are already initialized, which makes it suitable for using for the tasks depending on other services.</p>
+<p>Navigate to the <strong>/etc</strong> directory and open <strong>rc.local</strong> using <strong>vim</strong> editor. </p>
+<p><strong>cd /etc</strong></p>
+<p><strong>vim rc.local</strong></p>
+<p>The following lines need to be written in the file:</p>
+<p><strong>PATH=/usr/local/bin:$PATH</strong></p>
+<p><strong>csh -cf &#39;/command/runsvdir -P /var/service  &amp;&#39;</strong></p>
+<p>The purpose of setting the <strong>Path</strong> in this file is to search the executables in <strong>/usr/local/bin</strong>.</p>
+<p>The <strong>csh -cf</strong> will invoke the C shell to run the command <strong>/command/runsvdir -P /var/service  &amp;</strong>.</p>
+<p>This will launch the <strong>runsvdir</strong> with <strong>-P</strong> and <strong>/var/service</strong> as the argument and <strong>&amp;</strong> at the end will run this command in the background. As soon as the <strong>rc.local</strong> file runs these commands, the <strong>runsvdir</strong> will start supervision process for the service directory.</p>
+<p>16.3. <strong>Pstree after Reboot</strong></p>
+<pre><code class="lang-diff">-+= <span class="hljs-number">00001</span> root <span class="hljs-regexp">/sbin/</span>init
+ |--= <span class="hljs-number">00420</span> root <span class="hljs-string">dhclient:</span> system.syslog (dhclient)
+ |--= <span class="hljs-number">00423</span> root <span class="hljs-string">dhclient:</span> em0 [priv] (dhclient)
+ |--= <span class="hljs-number">00484</span> _dhcp <span class="hljs-string">dhclient:</span> em0 (dhclient)
+ |--= <span class="hljs-number">00485</span> root <span class="hljs-regexp">/sbin/</span>devd
+ |--= <span class="hljs-number">00681</span> root <span class="hljs-regexp">/usr/</span>sbin/syslogd -s
+ |--= <span class="hljs-number">00782</span> root <span class="hljs-regexp">/usr/</span>sbin/cron -s
+ |--= <span class="hljs-number">00787</span> root <span class="hljs-string">sendmail:</span> accepting connections (sendmail)
+ |--= <span class="hljs-number">00790</span> smmsp <span class="hljs-string">sendmail:</span> Queue runner@<span class="hljs-number">00</span>:<span class="hljs-number">30</span>:<span class="hljs-number">00</span> <span class="hljs-keyword">for</span> <span class="hljs-regexp">/var/</span>spool/clientmqueue (sendmail)
+ |--= <span class="hljs-number">00810</span> root <span class="hljs-string">sshd:</span> <span class="hljs-regexp">/usr/</span>sbin/sshd [listener] <span class="hljs-number">0</span> of <span class="hljs-number">10</span><span class="hljs-number">-100</span> startups (sshd)
+ |-+= <span class="hljs-number">00739</span> root <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/bin/</span>runsvdir -P <span class="hljs-regexp">/var/</span>service
+ | \-+= <span class="hljs-number">00745</span> root runsv apache24
+ |   \-+= <span class="hljs-number">00757</span> root <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/sbin/</span>httpd -f <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/etc/</span>apache24/httpd.conf -DFOREGROUND
+ |     |--- <span class="hljs-number">00806</span> www <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/sbin/</span>httpd -f <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/etc/</span>apache24/httpd.conf -DFOREGROUND
+ |     |--- <span class="hljs-number">00807</span> www <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/sbin/</span>httpd -f <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/etc/</span>apache24/httpd.conf -DFOREGROUND
+ |     \--- <span class="hljs-number">00808</span> www <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/sbin/</span>httpd -f <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/etc/</span>apache24/httpd.conf -DFOREGROUND
+ |-+= <span class="hljs-number">00823</span> root login [pam] (login)
+ | \-+= <span class="hljs-number">00849</span> root -csh (csh)
+ |   \-+= <span class="hljs-number">07791</span> root pstree
+ |     \--- <span class="hljs-number">07792</span> root ps -axwwo user,pid,ppid,pgid,command
+ |--= <span class="hljs-number">00824</span> root <span class="hljs-regexp">/usr/</span>libexec/getty Pc ttyv1
+ |--= <span class="hljs-number">00825</span> root <span class="hljs-regexp">/usr/</span>libexec/getty Pc ttyv2
+ |--= <span class="hljs-number">00826</span> root <span class="hljs-regexp">/usr/</span>libexec/getty Pc ttyv3
+ |--= <span class="hljs-number">00827</span> root <span class="hljs-regexp">/usr/</span>libexec/getty Pc ttyv4
+ |--= <span class="hljs-number">00828</span> root <span class="hljs-regexp">/usr/</span>libexec/getty Pc ttyv5
+ |--= <span class="hljs-number">00829</span> root <span class="hljs-regexp">/usr/</span>libexec/getty Pc ttyv6
+ \--= <span class="hljs-number">00830</span> root <span class="hljs-regexp">/usr/</span>libexec/getty Pc ttyv7
+</code></pre>
+<p>Here is an overview of the running processes on the system. This visually represents the hierarchy of the processes. Each indentation level shows the parent-child relationship. The <strong>runsvdir</strong> process supervises the <strong>apache24</strong> service, which is running multiple instances of the Apache HTTP Server to handle incoming connections simultaneously.</p>
+<p>Process <strong>00739</strong> shows the <strong>runsvdir</strong> which is part of the Runit service management setup. </p>
+<p>Process <strong>00745</strong> is the child process of <strong>00739</strong> and is a supervisor of Apache http server <strong>apache24</strong> service. Similarly, processes such as <strong>00806</strong>, <strong>00807</strong>, <strong>00808</strong> are also the child processes and are instances of the Apache HTTP Server.    </p>
+<ol>
+<li><h2 id="-httpd-conf-"><strong>httpd.conf</strong></h2>
+The httpd.conf is a crucial configuration file associated with the Apache server. It plays a vital role in defining how the Apache server will operate, allowing administrators to make customizations and tailor its behaviour according to the desired requirements.</li>
+</ol>
+<p>The httpd.conf file contains a range of directives that govern various aspects of the server’s functionality. These directives include settings related to server ports, virtual hosts, access control, logging, module configurations, etc. Any changes made to the configuration file are only recognized by httpd when it is started or restarted. It is important to mention that directives in the configuration files are case insensitive but the arguments to the directives ae often case sensitive.  </p>
+<p>In our project we modified the configuration file in such a way that it only contains directives which are essential for proper functioning of the Apache server. The location of the httpd.conf file in our project is <strong>/usr/local/etc/apache24</strong>. The httpd.conf file starts with contains following directives,</p>
+<p>17.1. <strong>ServerRoot and ServerName</strong></p>
+<p><strong>ServerRoot /usr/local/</strong>
+<strong>ServerName FreeBSD</strong></p>
+<p>The <strong>ServerRoot</strong> directive specifies the root directory where the Apache will look for its configuration files, modules and for other server related resources. The <strong>ServerName</strong> directive is used by the server to identify itself by using the hostname and port. For example, if the machine hosting the web server is named as <strong>my example.com</strong> and the machine also has a DNS alias <a href="http://www.example.com"><strong>www.example.com</strong></a> and we want to identify the web server with its alias then we can do so with the help of following command,</p>
+<p><strong>ServerName [www.example.com</strong>](<a href="http://www.example.com)**">http://www.example.com)**</a></p>
+<p>The ServerName directive can be written anywhere in the configuration file, but each appearance will override the previous server’s name. If no port is specified in the ServerName, then the server will use the port from the incoming requests. In our case, FreeBSD is the ServerName. </p>
+<p>17.2. <strong>Modules</strong>
+Next, we loaded some modules in the configuration file by using the <strong>LoadModule</strong> directive. The <strong>LoadModule</strong> directive loads the named module from the <strong>libexec</strong> subdirectory of the <strong>ServerRoot</strong>. The following modules are loaded in the configuration file:</p>
+<p><strong>LoadModule mpm_event_module libexec/apache24/mod_mpm_event.so</strong></p>
+<p><strong>LoadModule log_config_module libexec/apache24/mod_log_config.so</strong></p>
+<p><strong>LoadModule mime_module libexec/apache24/mod_mime.so</strong></p>
+<p><strong>LoadModule authz_core_module libexec/apache24/mod_authz_core.so</strong></p>
+<p><strong>LoadModule dir_module libexec/apache24/mod_dir.so</strong></p>
+<p><strong>LoadModule unixd_module libexec/apache24/mod_unixd.so</strong></p>
+<p><strong>LoadModule ssl_module libexec/apache24/mod_ssl.so</strong></p>
+<p>17.2.1 <strong>mpm_event_module</strong>
+The <strong>mpm_event_module</strong> in Apache is a clever way to handle many requests simultaneously, making websites faster and more responsive. It achieves this by efficiently using processes and threads. </p>
+<p>Instead of having one big process, the event MPM has a main process that creates smaller processes. Each smaller process has multiple threads to handle incoming requests. Additionally, there&#39;s a special thread dedicated to listening for new connections.</p>
+<p>The event MPM is particularly good at dealing with the <strong>&quot;keep-alive problem&quot;</strong> in HTTP. This means it can efficiently manage connections when clients want to keep the connection open after their first request. This efficient handling allows the server to serve more requests at the same time, enhancing overall performance and responsiveness.</p>
+<p>17.2.2 <strong>log_config_module</strong></p>
+<p>The <strong>log_config_module</strong> is responsible for logging the requests made to the server. Logs are written in a customizable format and can be written directly to a file or to an external program. Administrators can control what data is logged such as the client IP address, requested URLs, response status, referrer and user-agent. </p>
+<p>The <strong>log_config_module</strong> provides three directives namely <strong>TransferLog</strong> to create a log file, <strong>LogFormat</strong> to set a custom format and <strong>CustomLog</strong> to define a log file and format in one step. <strong>TransferLog</strong> and <strong>CustomLog</strong> directives can be used multiple times in a server to cause each request to be logged to multiple files.</p>
+<p>17.2.3  <strong>mime_module</strong>
+The <strong>mime_module</strong> handles the mapping of file extensions to MIME types. MIME types are used to indicate the type of data served by a web server, allowing clients (browsers) to interpret the content correctly. For example, when a client requests a file like &quot;example.jpg,&quot; the mime_module maps the &quot;.jpg&quot; extension to the corresponding MIME type for JPEG images (e.g., &quot;image/jpeg&quot;). This ensures that the client knows how to interpret and display the received content. The mime_module also provides a directive <strong>TypesConfig</strong> that is used to specify a file which also maps extension onto media types. </p>
+<p>17.2.4 <strong>authz_core_module</strong>
+The <strong>authz_core_module</strong> provides core authorization capabilities in Apache. It defines access control rules based on various criteria such as IP address, user authentication or specific HTTP methods. It also provides some directives such as <strong><RequireAll></strong>, <strong><RequireAny></strong> and <strong><RequireNone></strong> which can be combined with each other to express complex authorization logic. </p>
+<p>17.2.5 <strong>dir_module</strong>
+The <strong>dir_module</strong> enables Apache to serve directory indexes when a client requests a URL corresponding to a directory path. If there is no specific index file (e.g., index.html) in the requested directory, Apache will generate a directory listing, allowing the client to see the files and subdirectories within that directory.</p>
+<p>17.2.6 <strong>unixd_module</strong>
+The <strong>unixd_module</strong> provides Unix-specific functionality to Apache server. It is responsible for handling basic Unix-specific tasks, such as initializing the Apache process and setting permissions and <strong>User/Group</strong> ownership on various resources. Some of the directives of <strong>unixd_module</strong> are <strong>Group</strong> and <strong>User</strong> etc.</p>
+<p>17.2.7 <strong>ssl_module</strong>
+The <strong>ssl_module</strong> enables secure connections over <strong>HTTPS</strong> by providing support for the <strong>SSL/TLS</strong> protocols. It allows Apache to serve content securely using encryption, ensuring the data transmitted between the server and clients is encrypted and secure.</p>
+<p>17.3. <strong>TypesConfig</strong> </p>
+<p>After loading all modules next, we have the following directive in the configuration file: </p>
+<p><strong>TypesConfig /usr/local/etc/apache24/mime.types</strong> </p>
+<p>As mentioned before, the <strong>TypesConfig</strong> directive will tell Apache where to find the mapping of file extensions to their corresponding <strong>MIME types</strong>. 
+17.4. <strong>PID File</strong>
+Next, we have following directive written in the configuration file:</p>
+<p><strong>PidFile /var/run/httpd.pid</strong></p>
+<p>The <strong>PidFile</strong> directive specifies the location where the server records the process id of the daemon. This directive is often useful to be able to send different signals to the server, like closing and restarting its <strong>ErrorLog</strong>, <strong>TransferLog</strong> and re-read its configuration file.
+17.5. <strong>User and Group</strong>
+Subsequently we have following directives in the configuration file:</p>
+<p><strong>User www</strong></p>
+<p><strong>Group www</strong></p>
+<p>The above two directives specify the user and group under which the Apache server will run. In this case, Apache will run as the user <strong>www</strong> and the group <strong>www</strong>. Running the web server under a dedicated user and group helps in enhancing security by limiting the access only to essential operations.
+17.6. <strong>Ports</strong>
+<strong>Listen 80</strong></p>
+<p><strong>Listen 443</strong></p>
+<p>The above two directives <strong>Listen 80</strong> and <strong>Listen 443</strong> specify the port on which Apache will listen for incoming client connections. Port <strong>80</strong> is the default port for <strong>HTTP</strong> and allows unencrypted web traffic. Port <strong>443</strong> is a default port for <strong>HTTPS</strong> which allows encrypted web traffic. </p>
+<p>17.7 <strong>DocumentRoot</strong>
+Next, we have following directives written in the configuration file:</p>
+<p><strong>DocumentRoot &quot;/usr/local/www/apache24/data&quot;</strong></p>
+<p><strong>DirectoryIndex index.html</strong></p>
+<p><strong><Directrory "/usr/local/www/apache24/data"></strong></p>
+<p><strong>Require all granted</strong></p>
+<p><strong></Directory></strong></p>
+<p>The <strong>DocumentRoot</strong> directive specifies the base directory form which Apache serves content for the main server. In this case, the root directory is set to <strong>/usr/local/www/apache24/data</strong>. The <strong>DirectoryIndex</strong> directive specifies the default file that Apache will serve when the directory specified in <strong>DocumentRoot</strong> directive will be requested. The next block defines specific directives that only apply to directory specified, in this case <strong>/usr/local/www/apache24/data</strong>. In this block, we have used the directive <strong>Require all granted</strong> which allows access to the specified directory without any restrictions. Meaning that a client requesting for a resource form the directory <strong>/usr/local/www/apache24/data</strong> will be granted access without requiring any authentication. </p>
+<p>17.8 <strong>VirtualHost</strong>
+Thereafter we used <strong><VirtualHost></strong> directive to host multiple websites on Apache server. Each <strong>Virtual Host</strong> section defines the configuration settings that will apply only to a particular virtual host, allowing multiple websites to coexist on the same server. When the server receives a request for a document on a particular virtual host, it uses the configuration directives enclosed in the <strong><VirtualHost></strong> section. Each <strong>Virtual Host</strong> must correspond to a different IP address, different port number or a different host name of the server. In our configuration file we have used <strong><VitualHost></strong> twice for two different ports namely port <strong>80</strong> and port <strong>443</strong>.</p>
+<p><strong><VirtualHost \*:80></strong></p>
+<p><strong>DocumentRoot &quot;/usr/local/www/nike&quot;</strong></p>
+<p><strong><Directory "/usr/local/www/nike"></strong></p>
+<p><strong>Options FollowSymlinks</strong></p>
+<p><code> </code><strong>AllowOverride AuthConfig</strong></p>
+<p><code> </code><strong></Directory></strong></p>
+<p><strong>DirectoryIndex index.html</strong></p>
+<p><strong></VirtualHost></strong></p>
+<p><strong><VirtualHost \*:443></strong></p>
+<p><strong>DocumentRoot &quot;/usr/local/www/nike&quot;</strong></p>
+<p><strong><Directory "/usr/local/www/nike"></strong></p>
+<p><strong>Options FollowSymlinks</strong></p>
+<p><strong>AllowOverride AuthConfig</strong></p>
+<p><strong></Directory></strong></p>
+<p><strong>DirectoryIndex index.html</strong></p>
+<p><strong>SSLCertificateFile &quot;/root/FreeBSD_ECCert.pem&quot;</strong></p>
+<p><strong>SSLCertificateKeyFile &quot;/root/FreeBSD_ECCkey.pem&quot;</strong></p>
+<p><strong></VirtualHost></strong></p>
+<p>The <strong><VirtualHost></strong> sections for <strong>port 80</strong> and <strong>443</strong> are quite similar to each other. As mentioned before, port 80 is a default port for <strong>HTTP</strong> and is used for unencrypted web traffic and port <strong>443</strong> is a default port for <strong>HTTPS</strong> which allows only encrypted web traffic. Port <strong>80</strong> and port <strong>443</strong> are using the same directory <strong>/usr/local/www/nike</strong> to which the client will be provided access but different index.html files will be served to the client because we have two different <strong>index.html</strong> files set for port <strong>80</strong> and <strong>443</strong>. Moreover, we are allowing <strong>symlinks</strong> on the directory in both port <strong>80</strong> and <strong>443</strong> which means that if there are any symbolic links inside the <strong>/usr/local/www/nike</strong> directory, the web server will follow them and serve the files or directories they point to. Both <strong>VirtualHost</strong> port <strong>80</strong> and port <strong>443</strong> also allow the <strong>.htaccess</strong> files to override the authentication settings <strong>AuthConfig</strong>.<strong> Furthermore, the </strong>VirtualHost<strong> port </strong>443<strong> also contains the </strong>SSL certificates<strong> by using the directives </strong>SSLCertificateFile<strong> and </strong>SSLCertificateKeyFile<strong> which are used to secure connections between the server and client. A more detailed explanation about how these </strong>SSL certificates** work is explained in the later part of the document. </p>
+<p>Apache HTTP server is also configured for logging. Logging part of the httpd.conf file is discussed later in this documentation.</p>
+<p>Now here is a look at the httpd.conf file.
+17.9 <strong>httpd.conf File Content</strong>
+<strong># ServerRoot is the starting point for loading the modules</strong> </p>
+<p>ServerRoot “usr/local/</p>
+<p>ServerName FreeBSD</p>
+<p>LoadModule mpm_event_module libexec/apache24/mod_mpm_event.so</p>
+<p>LoadModule log_config_module libexec/apache24/mod_log_config.so</p>
+<p>LoadModule mime_module libexec/apache24/mod_mime.so</p>
+<p>LoadModule authz_core_module libexec/apache24/mod_authz_core.so</p>
+<p>LoadModule dir_module libexec/apache24/mod_dir.so</p>
+<p>LoadModule unixd_module libexec/apache24/mod_unixd.so</p>
+<p>LoadModule ssl_module libexec/apache24/mod_ssl.so</p>
+<p><strong># Setuid user and group</strong></p>
+<p>User www</p>
+<p>Group www</p>
+<p><strong># Listener</strong></p>
+<p>Listen 80</p>
+<p>Listen 443</p>
+<p>DocumentRoot &quot;/usr/local/www/apache24/data&quot;</p>
+<p><strong># Global DocumentRoot</strong></p>
+<p>DirectoryIndex index.html</p>
+<Directrory "/usr/local/www/apache24/data">
+
+<p>Require all granted</p>
+<p></Directory></p>
+<VirtualHost \*:80>
+
+DocumentRoot &quot;/usr/local/www/nike&quot;
+
+<Directory "/usr/local/www/nike">
+
+Options FollowSymlinks
+
+<code>`AllowOverride AuthConfig</code>         `</Directory>
+
+DirectoryIndex index.html
+
+</VirtualHost>
+
+<VirtualHost \*:443>
+
+DocumentRoot &quot;/usr/local/www/nike&quot;
+
+<Directory "/usr/local/www/nike">
+
+Options FollowSymlinks
+
+AllowOverride AuthConfig
+
+</Directory>
+
+DirectoryIndex index.html
+
+SSLCertificateFile &quot;/root/FreeBSD_ECCert.pem&quot;
+
+SSLCertificateKeyFile &quot;/root/FreeBSD_ECCkey.pem&quot;
+
+</VirtualHost>
+
+<p>ErrorLog “/var/log/apache24/error.log“</p>
+<p>LogLevel debug</p>
+<IfModule log\_config\_module>
+
+LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&gt;s %b \&quot;%{Referer}i\&quot; \&quot;%{User-agent}i\&quot;&quot; combined
+
+LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&gt;s %b&quot; common
+
+CustomLog “/var/log/apache24/access.log” combined
+
+</IfModule>
+
+<ol>
+<li><h2 id="-ssl-certificates-"><strong>SSL Certificates</strong></h2>
+</li>
+</ol>
+<p>The <strong>importance of an SSL</strong> (Secure Sockets Layer) certificate lies in its crucial role in ensuring the security, privacy, and trustworthiness of online communication between a client (e.g., web browser) and a server (e.g., web server). SSL certificates enable the use of HTTPS, which encrypts data transmitted between the client and server, protecting it from interception, tampering, and eavesdropping by malicious actors.</p>
+<p>18.1 <strong>X509 Certificates in Https</strong>
+A digital certificate contains the public key of a server. It’s an electronic document that proves the ownership of a public key. It contains Serial number, Identity of owner, validity, issuer, public key etc. A X509 is standard that defines the format of digital certificate. This format is used in IP security and SSL/TLS. It is based on the use of public key Cryptography (ECC or RSA) and digital signatures.</p>
+<p>18.2 <strong>Working of a Self-Signed SSL Certificate and Private/Public Key Generation</strong> 
+A self-signed SSL certificate works by enabling secure communication between a server and clients without involving a trusted third-party Certificate Authority (CA). The process of a self-signed SSL certificate involves the server generating its key pair (public and private keys), creating a Certificate Signing Request (CSR) containing its public key, and using its private key to sign the CSR, producing a self-signed certificate. The certificate, along with the private key, is installed on the server. When clients connect, the server presents the self-signed certificate.</p>
+<p>18.3 <strong>Generating a Self-Signed Certificate in Project</strong> 
+In order to create a self-signed Certificate for our webserver, certain Scripts and Configuration files were downloaded from <a href="http://www.fehcom.net">http://www.fehcom.net</a></p>
+<p>(make_CA.sh)    (make_server.sh)    (CA.cfg)        (server.cfg)</p>
+<p><strong>chmod+x make_CA.sh</strong>  </p>
+<p><strong>./make_CA.sh</strong></p>
+<p>First the make_CA.sh was made executable and then executed in order to generate a Root Certificate using the OpenSSL command line tool so that we can become a Certificate Authority ourselves and creation of Public/Private Key pair is done to sign the certificates. </p>
+<ol>
+<li><h4 id="-make-_ca-sh-script-"><code> </code><strong>make_CA.sh Script</strong></h4>
+The following is a brief description of the various commands used in this file:</li>
+</ol>
+<p><strong>Openssl ecparam -genkey -name ${TYPE} -out ${KEY}</strong></p>
+<p>This command generates an Elliptic Curve Cryptography (ECC) private key using the OpenSSL <strong>ecparm</strong> utility. The <strong>-genkey</strong> option indicates that a new private key should be generated. The <strong>-${TYPE}</strong> option specifies the elliptic curve type, and the <strong>-out ${KEY}</strong> option designates the output file where the generated private key will be saved.</p>
+<p><strong>Openssl req -new -key ${KEY} -config ${CONFIG} -extensions v3_ca -out ${CERT}.csr</strong></p>
+<p>This command generates a Certificate Signing Request (CSR) using the ECC private key generated in the previous step. The CSR is a request sent to a Certificate Authority (CA) to obtain a certificate, which will be used to identify the entity associated with the ECC private key.</p>
+<p><strong>Openssl req -x509 -days 365 -key ${KEY} -in ${CERT}.csr -out ${CERT}</strong></p>
+<p>This command creates a self-signed X.509 certificate using the ECC private key, and the CSR generated in the previous step. <strong>-x509</strong> Specifies that the output should be a self-signed certificate rather than a CSR. <strong>-days 365</strong> Sets the validity period of the self-signed certificate to 365 days.</p>
+<p>18.4. <strong>Server.cfg Configuration File</strong>
+<strong>Server.cfg</strong> is a configuration file used by OpenSSL when generating an ECC (Elliptic Curve Cryptography) certificate for a server. The configuration file contains settings and parameters that specify how the certificate request should be processed and what information should be included in the resulting certificate. Firstly, we added all our relevant information such as name, place organization name, email, host name etc. Then this file was changed to our own hostname with the following command: </p>
+<p><strong>mv server.cfg labpc107.cfg</strong></p>
+<p>After a Certificate Signing Request (CSR) for the web server has been created using the Server.cfg file in the previous step (CSR contains public key and desired attributes for web server certificate), it is then used in conjunction with server.cfg to create a self-signed X.509 certificate, which is then signed using the RootCA’s Private key, to enable HTTPS connection.</p>
+<p>First, we made the Make_server.sh executable by executing the following command:</p>
+<p><strong>chmod + x make_server.sh.</strong></p>
+<p>Then we execute the make_server.sh by entering the hostname of our server:</p>
+<p><strong>./make_server.sh labpc-107</strong></p>
+<p>18.5. <strong>make_server.sh Script</strong>
+Following commands are used in make_server.sh, with their short description:</p>
+<p><strong>Openssl ecparam -genkey -name ${TYPE} -out ${KEY}</strong></p>
+<p>This command generates an Elliptic Curve Cryptography (ECC) private key using the OpenSSL ecparam utility. The <strong>-genkey</strong> option indicates that a new private key should be generated. The <strong>-${TYPE}</strong> option specifies the elliptic curve type, and the <strong>-out ${KEY}</strong> option designates the output file where the generated private key will be saved.</p>
+<p><strong>openssl req -new -key ${KEY} -out ${HOST}.csr -config ${CONFIG}</strong></p>
+<p>This command generates a Certificate Signing Request (CSR) using the ECC private key generated in the previous step. The CSR is a request sent to a Certificate Authority (CA) to obtain a certificate, which will be used to identify the entity associated with the ECC private key.</p>
+<p><strong>Openssl req -x509 -pkeyopt ec_paramgen_curve: ${TYPE} -nodes -days 365 -in ${HOST}.csr -out ${CERT} -config ${CONFIG} -extensions x509v3 -key rootCA_ECCkey.pem</strong></p>
+<p>The <strong>-x509</strong> specifies that the output should be a self-signed certificate rather than a CSR. The <strong>-pkeyopt ec_paramgen_curve: ${TYPE}</strong> specifies the elliptic curve type for the ECC private key used in the self-signed certificate. The <strong>-nodes</strong> indicate that the private key should not be encrypted with a passphrase. The <strong>-days 365</strong> sets the validity period of the self-signed certificate to 365 days (1 year). The <strong>-in ${HOST}.csr</strong> specifies the input CSR file (generated in the second step) that provides the subject information for the certificate. The <strong>-out ${CERT}</strong> specifies the output file name for the self-signed certificate. The <strong>${CERT}</strong> is a variable representing the name of the certificate, so <strong>${CERT}</strong> is the certificate file.</p>
+<p>The <strong>-config ${CONFIG}</strong> specifies the configuration file to be used for certificate generation. The configuration file can contain additional certificate-related settings and extensions. The <strong>-extensions x509v3</strong> specifies the certificate extensions to be used. <strong>x509v3</strong> extensions allow custom extensions to be included in the certificate.</p>
+<p>18.6 <strong>View Certificate</strong>
+To view the certificate in a human readable form on console we can type the following command:</p>
+<p><strong>Openssl x509 -in labpc107_ECCert.pem -text -noout | more</strong></p>
+<p>This command is useful for inspecting the details of an X.509 certificate, including the certificate&#39;s subject, issuer, validity dates, public key details, extensions, and other relevant information.
+18.7 <strong>Trust Chain</strong>
+Finally in order to establish a Trust Chain Integration, once the SSL certificate is generated, we need to add the following files in the Httpd.conf:</p>
+<p><strong>SSLCertificateFile “/root/Server_ECCert.pem”</strong></p>
+<p>This directive specifies the path to the SSL certificate file (e.g., labpc107_ECCert.pem) that you obtained or generated for your server. The certificate file contains the public key, the server&#39;s identity, and the signature created by the private key. Apache uses this certificate to identify itself to clients during the SSL/TLS handshake.</p>
+<p><strong>SSLCertificateKeyFile “/root/Server_ECCkey.pem”</strong></p>
+<p>This directive specifies the path to the SSL certificate&#39;s private key file (e.g., labpc107_ECCkey.pem). The private key is used to decrypt encrypted data received from clients and to sign data sent to clients. </p>
+<ol>
+<li><h2 id="-logging-"><strong>Logging</strong></h2>
+Logging is an important part of any web server. Similarly, Apache server also makes logs for the successful client requests in the form of access logs and all error events in the form of error log. One can use these logs in case of any troubleshooting or maintenance.
+19.1 <strong>Access Log</strong>
+The server access log records all requests processed by the server. The location and content of the access log are controlled by the <strong>CustomLog</strong> directive. The format of the access log is highly configurable. The format is specified using a format string that looks much like a C-style printf format string. There are different kinds of log format strings used for access logs. Access Log file needs to be added in the <strong>httpd.conf</strong> file in order to store the access logs of the Apache Server. For this purpose, we will add an <strong><IfModule></strong> block which is a conditional configuration directive that defines the settings specific to the <strong>log_config</strong> module, which is responsible for logging requests and responses made to the web server. </li>
+</ol>
+<p><strong><IfModule log\_config\_module></strong></p>
+<p><code> </code><strong>LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&gt;s %b \&quot;%{Referer}i\&quot; \&quot;%{User-agent}i\&quot;&quot; combined</strong></p>
+<p><code> </code><strong>LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&gt;s %b&quot; common</strong></p>
+<p><code> </code><strong>CustomLog ”/var/log/apache24/access.log” combined</strong></p>
+<p><strong></IfModule></strong></p>
+<p>In this <strong><IfModule></strong>, two formats of logging have been defined first and then used later for the logging.</p>
+<p>19.2. <strong>Common Log Format</strong></p>
+<p>A typical configuration for the access log might look as follows:</p>
+<p><strong>LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&gt;s %b&quot; common</strong></p>
+<p><strong>%h:</strong> This is the IP address of the client (remote host) which made the request to the server.</p>
+<p><strong>%l:</strong> Represents the remote logname (RFC 1413 identity) of the client.</p>
+<p><strong>%u:</strong> This is the userid of the person requesting the document as determined by HTTP authentication.</p>
+<p><strong>%t:</strong> Tells the time at which the request was received.</p>
+<p><strong>\”%r\”:</strong> Provides information about the method used by client, The requested resource by client and the protocol used by the client.</p>
+<p><strong>%&gt;s:</strong> This is the status code that the server sends back to the client.</p>
+<p><strong>%b:</strong> The last part indicates the size of the object returned to the client.</p>
+<p>19.3 <strong>Combined Log Format</strong>
+Another commonly used format string is called the <strong>Combined Log Format</strong>. It can be used as follows:</p>
+<p><strong>LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&gt;s %b \&quot;%{Referer}i\&quot; \&quot;%{User-agent}i\&quot;&quot; combined</strong></p>
+<p>This format is the same as the Common Log Format, with the addition of two more fields. The additional fields are:</p>
+<p><strong>\&quot;%{Referer}i\&quot;:</strong> This gives the information about the site from where the client reports are referred.</p>
+<p><strong>\&quot;%{User-agent}i\&quot;:</strong> This is the information that the client browser reports to identify itself.</p>
+<p>After defining the log formats in the <strong><IfModule></strong>, we can use either <strong>common</strong> or <strong>combined</strong> format to make entries to our access log file. Here is the syntax:</p>
+<p><strong>CustomLog “/var/log/apache24/access.log” combined</strong></p>
+<p>This line in the <strong><IfModule></strong> will set the location of <strong>access.log</strong> file to <strong>/var/log/apache24/. Common</strong> or <strong>Combined</strong> at the end will specify the format of the entries that will be made by Apache Server to the access file.
+19.4 <strong>Error Log</strong>
+Similar to access logs, we will add the following line in httpd.conf file to make the error logs of the Apache Server: </p>
+<p><strong>ErrorLog “/var/log/apache24/error.log”</strong></p>
+<p>This is the place where Apache httpd will send all the information about diagnostics and errors encountered during processing the request. The format of the error log is defined by the ErrorLogFormat directive, with which you can customize what values are logged.</p>
+<p><strong>ErrorLogFormat “[%t] [%l] [pid %P] %F: %E: [client %a] %M&quot;</strong></p>
+<p><code> </code>A default error log format is defined if you don&#39;t specify one. A typical log message follows:</p>
+<p><strong>[Sun Jul 30 2023] [core:info][pid 882:tid 35248015360] [client 192.168.178.26] File does not exist: /usr/local/www/example/favicon.ico, referrer: <a href="http://192.168.178.79/">http://192.168.178.79/</a></strong></p>
+<p>The <strong>LogLevel</strong> directive allows you to specify a log severity level on a per-module basis. For example:</p>
+<ul>
+<li><strong>LogLevel warn:</strong> Provides warning messages that indicate potential issues that need attention.</li>
+<li><strong>LogLevel debug:</strong> Provides detailed debugging information.</li>
+<li><strong>LogLevel alert:</strong> Provides details about critical conditions that require immediate attention.</li>
+<li><strong>LogLevel error:</strong> Provides standard logs for error messages that are significant.</li>
+</ul>
+<p>We have used the <strong>LogLevel debug</strong> in our <strong>httpd.conf</strong> file.</p>
+<ol>
+<li><h2 id="-log-rotation-"><strong>Log Rotation</strong></h2>
+Log rotation in FreeBSD is the process in which log files are managed in such a way that it prevents them from becoming too large. To make the logs manageable and organized on the system where logging activity is very high, log rotation is a vital feature. Under FreeBSD there is a service available that is used for the log rotation called <strong>newsyslog</strong>.
+20.1 <strong>Newsyslog</strong>
+It is a utility that is used to maintain log files to manageable sizes. It needs to be scheduled to run periodically. It is used to manage log files by rotating and compressing them based on size and time. It prevents the log files to become too large so that they occupy bigger space on hard disk.</li>
+</ol>
+<p>The <strong>newsyslog</strong> service can be configured to <strong>watch</strong> these log files and perform specific actions based on predefined criteria specified in the <strong>configuration file (/etc/newsyslog.conf).</strong> When a service directly writes to a file, it needs to be stopped first, and the log file must be closed. Then, a new empty file with the same name is created, and the service can be restarted to continue writing log data. We have configured the <strong>/etc/newsyslog.conf</strong> as follows: </p>
+<p><strong>Logfilename                          [owner:group]    mode  count  size    when   flags</strong>      </p>
+<p><strong>[/pid_file]         [sig_num]</strong></p>
+<p>/var/log/apache24/access.log                              644        7         *       @T00    JC   var/run/httpd.pid       30</p>
+<p>/var/log/apache24/error.log                                  644        7         *      @T00    JC      /var/run/httpd.pid      30</p>
+<p>Here is the information that has been provided in the <strong>newsyslog</strong> configuration file:</p>
+<ul>
+<li><strong>Logfilename:</strong> Name of the system log file to be archived.</li>
+<li><strong>Mode:</strong> The permission/mode for the log file.</li>
+<li><strong>count:</strong> The number of backup files to keep.</li>
+<li><strong>size:</strong> Maximum size of the log file before rotation in kilobytes, * means no size-based rotation.</li>
+<li><strong>when:</strong> Rotation time or interval from midnight. @T00 means daily rotation at midnight.** </li>
+<li><strong>flags:</strong> JC means to copy and truncate log files in all cases.</li>
+<li><strong>[/pid_file]:</strong> The path to the process ID (pid) file.</li>
+<li><strong>[sig_num]:</strong> The** signal number to send to the process when rotating.</li>
+</ul>
+<p>So basically, in the <strong>/etc/newsyslog.conf</strong> we are specifying the access and error log files to keep <strong>7</strong> backup files with no size specified to rotate at midnight. <strong>JC</strong> will copy and truncate log files in all cases and will make sure that log data is preserved in a backup copy, even if log file is not used by any other process at the rotation time. Pid file preserves the process id of the Apache Server. Signal number <strong>30</strong> indicates <strong>SIGUSR1</strong>, which is a user defined signal. It is sent to inform the process to close and reopen its log file.</p>
+<ol>
+<li><h2 id="-references-"><strong>References</strong></h2>
+</li>
+<li><p><a href="https://www.hostinger.com/tutorials/what-is-apache">What Is Apache? An In-Depth Overview of Apache Web Server (hostinger.com)</a></p>
+</li>
+<li><a href="https://www.sumologic.com/blog/apache-web-server-introduction/">What is Apache? In-Depth Overview of Apache Web Server | Sumo Logic</a></li>
+<li><a href="https://www.twaino.com/en/blog/website-creation/apache-server-2/">https://www.twaino.com/en/blog/website-creation/apache-server-2/</a>    </li>
+<li><a href="https://man.freebsd.org/cgi/man.cgi">https://man.freebsd.org/cgi/man.cgi</a></li>
+<li><a href="https://docs.freebsd.org/en/books/handbook/">https://docs.freebsd.org/en/books/handbook/</a></li>
+<li><a href="https://freebsdfoundation.org/freebsd-project/what-is-freebsd/#:~:text=FreeBSD%20is%20a%20free%20Unix,key%20features%20and%20applications%20here">https://freebsdfoundation.org/freebsd-project/what-is-freebsd/#:~:text=FreeBSD%20is%20a%20free%20Unix,key%20features%20and%20applications%20here</a>.</li>
+<li><a href="https://www.freebsd.org/about/">About FreeBSD | The FreeBhttps://de.wikipedia.org/wiki/Syslog</a></li>
+<li><a href="https://www.freebsd.org/about/">https://cr.yp.to/daemontools/multilog.html</a></li>
+<li><a href="https://www.freebsd.org/about/">https://man.freebsd.org/cgi/man.cgi?newsyslog.conf(5)</a></li>
+<li><a href="https://www.freebsd.org/about/">https://httpd.apache.org/docs/2.4/logs.html</a></li>
+<li><a href="https://www.freebsd.org/about/">https://en.wikipedia.org/wiki/Log_rotationSD Project</a></li>
+<li><a href="https://de.wikipedia.org/wiki/Syslog">https://de.wikipedia.org/wiki/Syslog</a></li>
+<li><a href="https://cr.yp.to/daemontools/multilog.html">https://cr.yp.to/daemontools/multilog.html</a></li>
+<li><a href="https://man.freebsd.org/cgi/man.cgi?newsyslog.conf(5">https://man.freebsd.org/cgi/man.cgi?newsyslog.conf(5</a>)</li>
+<li><a href="https://httpd.apache.org/docs/2.4/logs.html">https://httpd.apache.org/docs/2.4/logs.html</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Log\_rotation">https://en.wikipedia.org/wiki/Log\_rotation</a><a href="https://httpd.apache.org/docs/2.4/configuring.html">https://httpd.apache.org/docs/2.4/configuring.html</a></li>
+<li><a href="https://www.hostgator.com/help/article/httpd-configuration-httpd-conf">https://www.hostgator.com/help/article/httpd-configuration-httpd-conf</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/mod/core.html#serverroot">https://httpd.apache.org/docs/2.4/mod/core.html#serverroot</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/mod/core.html#servername">https://httpd.apache.org/docs/2.4/mod/core.html#servername</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/mod/event.html">https://httpd.apache.org/docs/2.4/mod/event.html</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/mod/mod_log_config.html">https://httpd.apache.org/docs/2.4/mod/mod_log_config.html</a></li>
+<li><a href="https://httpd.apache.org/docs/current/mod/mod_mime.html">https://httpd.apache.org/docs/current/mod/mod_mime.html</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/mod/mod_authz_core.html">https://httpd.apache.org/docs/2.4/mod/mod_authz_core.html</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/mod/mod_dir.html">https://httpd.apache.org/docs/2.4/mod/mod_dir.html</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/mod/mod_unixd.html">https://httpd.apache.org/docs/2.4/mod/mod_unixd.html</a></li>
+<li><a href="https://httpd.apache.org/docs/current/mod/mpm\_common.html#pidfile">https://httpd.apache.org/docs/current/mod/mpm\_common.html#pidfile</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/mod/core.html#documentroot">https://httpd.apache.org/docs/2.4/mod/core.html#documentroot</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/mod/core.html#virtualhost">https://httpd.apache.org/docs/2.4/mod/core.html#virtualhost</a></li>
+<li><a href="https://de.wikipedia.org/wiki/Syslog">https://de.wikipedia.org/wiki/Syslog</a></li>
+<li><a href="https://cr.yp.to/daemontools/multilog.html">https://cr.yp.to/daemontools/multilog.html</a></li>
+<li><a href="https://man.freebsd.org/cgi/man.cgi?newsyslog.conf(5)">https://man.freebsd.org/cgi/man.cgi?newsyslog.conf(5)</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/logs.html">https://httpd.apache.org/docs/2.4/logs.html</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Log_rotation">https://en.wikipedia.org/wiki/Log_rotation</a></li>
+<li><a href="https://www.baeldung.com/openssl-self-signed-cert">https://www.baeldung.com/openssl-self-signed-cert</a></li>
+<li><a href="https://stackoverflow.com/questions/10175812/how-to-generate-a-self-signed-ssl-certificate-using-openssl">https://stackoverflow.com/questions/10175812/how-to-generate-a-self-signed-ssl-certificate-using-openssl</a></li>
+<li><a href="https://gist.github.com/ArturDorochowicz/9791217">https://gist.github.com/ArturDorochowicz/9791217</a></li>
+<li><a href="https://youtu.be/c-LEHJy5g8Y">https://youtu.be/c-LEHJy5g8Y</a></li>
+</ol>
